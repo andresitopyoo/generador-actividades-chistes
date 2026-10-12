@@ -1,0 +1,2592 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>¿Aburrido? · Generador de Actividades + Chistes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Dark (default) */
+      --bg-deep: #0f0519;
+      --bg-mid: #1a0b2e;
+      --bg-soft: #2a1545;
+      --pink: #ff6b9d;
+      --purple: #b44dff;
+      --cyan: #00e5ff;
+      --orange: #ff9f43;
+      --green: #00e676;
+      --card-bg: rgba(255, 255, 255, 0.06);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --text: #fdf6ff;
+      --muted: #b8a4d9;
+      --radius: 24px;
+      --radius-sm: 14px;
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+      --glow-pink: 0 0 40px rgba(255, 107, 157, 0.25);
+      --glow-cyan: 0 0 40px rgba(0, 229, 255, 0.2);
+      --select-bg: rgba(0, 0, 0, 0.3);
+      --select-hover: rgba(0, 0, 0, 0.4);
+      --meta-bg: rgba(0, 0, 0, 0.3);
+      --fav-item-bg: rgba(0, 0, 0, 0.28);
+      --fav-item-hover: rgba(0, 0, 0, 0.38);
+      --empty-bg: rgba(0, 0, 0, 0.15);
+      --kbd-bg: rgba(255, 255, 255, 0.08);
+      --btn-sm-bg: rgba(255, 255, 255, 0.08);
+      --badge-bg: rgba(255, 255, 255, 0.1);
+      --orb-opacity: var(--orb-opacity);
+      --grid-dot: rgba(255, 255, 255, 0.04);
+      --author-bg: linear-gradient(135deg, rgba(255, 107, 157, 0.15), rgba(180, 77, 255, 0.15));
+      --author-border: rgba(255, 107, 157, 0.3);
+    }
+
+    [data-theme="light"] {
+      --bg-deep: #f5f0ff;
+      --bg-mid: #ebe4f7;
+      --bg-soft: #e0d6f5;
+      --pink: #e84a7f;
+      --purple: #9b2dff;
+      --cyan: #0099b8;
+      --orange: #e8890c;
+      --green: #00b85a;
+      --card-bg: rgba(255, 255, 255, 0.75);
+      --card-border: rgba(120, 80, 180, 0.18);
+      --text: #1a0b2e;
+      --muted: #6b5a8a;
+      --shadow: 0 20px 50px rgba(100, 60, 160, 0.12);
+      --glow-pink: 0 0 30px rgba(232, 74, 127, 0.15);
+      --glow-cyan: 0 0 30px rgba(0, 153, 184, 0.12);
+      --select-bg: rgba(255, 255, 255, 0.9);
+      --select-hover: rgba(255, 255, 255, 1);
+      --meta-bg: rgba(120, 80, 180, 0.08);
+      --fav-item-bg: rgba(255, 255, 255, 0.7);
+      --fav-item-hover: rgba(255, 255, 255, 0.95);
+      --empty-bg: rgba(120, 80, 180, 0.06);
+      --kbd-bg: rgba(120, 80, 180, 0.1);
+      --btn-sm-bg: rgba(120, 80, 180, 0.08);
+      --badge-bg: rgba(120, 80, 180, 0.1);
+      --orb-opacity: 0.22;
+      --grid-dot: rgba(100, 60, 160, 0.06);
+      --author-bg: linear-gradient(135deg, rgba(232, 74, 127, 0.12), rgba(155, 45, 255, 0.12));
+      --author-border: rgba(232, 74, 127, 0.35);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: var(--bg-deep);
+      transition: background 0.4s ease, color 0.4s ease;
+      min-height: 100vh;
+      color: var(--text);
+      overflow-x: hidden;
+      position: relative;
+      line-height: 1.5;
+    }
+
+    /* ========== FONDO DECORATIVO ========== */
+    .bg-orbs {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: var(--orb-opacity);
+      animation: floatOrb 18s ease-in-out infinite;
+    }
+
+    .orb-1 {
+      width: 420px; height: 420px;
+      background: var(--purple);
+      top: -10%; left: -8%;
+      animation-delay: 0s;
+    }
+
+    .orb-2 {
+      width: 350px; height: 350px;
+      background: var(--pink);
+      bottom: 5%; right: -5%;
+      animation-delay: -6s;
+      animation-duration: 22s;
+    }
+
+    .orb-3 {
+      width: 280px; height: 280px;
+      background: var(--cyan);
+      top: 45%; left: 55%;
+      opacity: 0.25;
+      animation-delay: -12s;
+      animation-duration: 20s;
+    }
+
+    @keyframes floatOrb {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(30px, -40px) scale(1.08); }
+      66% { transform: translate(-20px, 25px) scale(0.95); }
+    }
+
+    /* Grid sutil de puntos */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(var(--grid-dot) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      z-index: 0;
+      mask-image: linear-gradient(to bottom, black 40%, transparent 95%);
+    }
+
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 3.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ========== HEADER ========== */
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      animation: fadeDown 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .logo-emoji {
+      font-size: clamp(2rem, 6vw, 3rem);
+      animation: wiggle 3s ease-in-out infinite;
+      display: inline-block;
+    }
+
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(-6deg); }
+      50% { transform: rotate(6deg); }
+    }
+
+    .logo {
+      font-family: 'Fredoka', sans-serif;
+      font-size: clamp(2rem, 6vw, 3.2rem);
+      font-weight: 700;
+      background: linear-gradient(110deg, var(--pink) 0%, var(--purple) 45%, var(--cyan) 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -1px;
+      animation: shine 6s linear infinite;
+    }
+
+    @keyframes shine {
+      to { background-position: 200% center; }
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      letter-spacing: 0.2px;
+    }
+
+    .author {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: var(--author-bg);
+      border: 1px solid var(--author-border);
+      padding: 0.45rem 1.2rem;
+      border-radius: 50px;
+      font-size: 0.92rem;
+      color: var(--pink);
+      font-weight: 600;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(255, 107, 157, 0.1);
+    }
+
+    .author strong {
+      color: var(--text);
+    }
+
+    /* ========== CONTROLES ========== */
+    .controls {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      margin-bottom: 2rem;
+      backdrop-filter: blur(20px);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+    }
+
+    .controls::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--pink), var(--purple), var(--cyan), var(--pink));
+      background-size: 200% 100%;
+      animation: borderFlow 4s linear infinite;
+    }
+
+    @keyframes borderFlow {
+      to { background-position: 200% 0; }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .controls h2 {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.35rem;
+      margin-bottom: 1.3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-weight: 600;
+    }
+
+    .filters {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 1.1rem;
+      margin-bottom: 1.6rem;
+    }
+
+    .filter-group label {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    select {
+      width: 100%;
+      padding: 0.8rem 1.1rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--card-border);
+      background: var(--select-bg);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 500;
+      outline: none;
+      transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23b8a4d9' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+    }
+
+    select:hover {
+      border-color: rgba(180, 77, 255, 0.4);
+      background-color: var(--select-hover);
+    }
+
+    select:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 3px rgba(180, 77, 255, 0.25);
+    }
+
+    select option {
+      background: var(--bg-mid);
+      color: var(--text);
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+      justify-content: center;
+    }
+
+    .btn {
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 600;
+      font-size: 1.02rem;
+      padding: 0.95rem 1.7rem;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s, filter 0.2s;
+      position: relative;
+      overflow: hidden;
+      letter-spacing: 0.2px;
+    }
+
+    .btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(rgba(255,255,255,0.2), transparent);
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+
+    .btn:hover::after {
+      opacity: 1;
+    }
+
+    .btn:active {
+      transform: scale(0.96);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--pink) 0%, var(--purple) 100%);
+      color: white;
+      box-shadow: 0 8px 28px rgba(255, 107, 157, 0.4), var(--glow-pink);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 12px 35px rgba(255, 107, 157, 0.5), 0 0 50px rgba(255, 107, 157, 0.3);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, var(--cyan) 0%, #00b4d8 100%);
+      color: #0a0a1a;
+      box-shadow: 0 8px 28px rgba(0, 229, 255, 0.35), var(--glow-cyan);
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 12px 35px rgba(0, 229, 255, 0.45);
+    }
+
+    .btn-both {
+      background: linear-gradient(135deg, var(--orange) 0%, var(--pink) 50%, var(--purple) 100%);
+      background-size: 200% 200%;
+      color: white;
+      box-shadow: 0 8px 28px rgba(255, 159, 67, 0.4);
+      animation: gradientShift 5s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .btn-both:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 12px 40px rgba(255, 159, 67, 0.5);
+    }
+
+    .btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    .kbd-hint {
+      text-align: center;
+      margin-top: 1.1rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .kbd {
+      display: inline-block;
+      background: var(--kbd-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 7px;
+      padding: 0.18rem 0.5rem;
+      font-size: 0.75rem;
+      font-family: 'Outfit', monospace;
+      font-weight: 600;
+      color: var(--cyan);
+    }
+
+    /* ========== RESULTADOS ========== */
+    .results {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.6rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      backdrop-filter: blur(20px);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      min-height: 260px;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+    }
+
+    .activity-card::before {
+      background: linear-gradient(90deg, var(--green), var(--cyan));
+    }
+
+    .joke-card::before {
+      background: linear-gradient(90deg, var(--pink), var(--orange));
+    }
+
+    /* Brillo sutil en la esquina */
+    .card::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.15rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-title {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .badge {
+      font-size: 0.72rem;
+      padding: 0.3rem 0.8rem;
+      border-radius: 50px;
+      background: var(--badge-bg);
+      color: var(--muted);
+      text-transform: capitalize;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .card-body {
+      flex: 1;
+      font-size: 1.2rem;
+      line-height: 1.55;
+      font-weight: 600;
+      position: relative;
+      z-index: 1;
+      letter-spacing: -0.2px;
+    }
+
+    .card-body em {
+      font-style: normal;
+      color: var(--cyan);
+      font-weight: 700;
+    }
+
+    .card-meta {
+      margin-top: 1.3rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+      position: relative;
+      z-index: 1;
+    }
+
+    .meta-item {
+      background: var(--select-bg);
+      padding: 0.35rem 0.75rem;
+      border-radius: 10px;
+      font-weight: 500;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .card-actions {
+      margin-top: 1.2rem;
+      display: flex;
+      gap: 0.6rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn-sm {
+      padding: 0.55rem 1.15rem;
+      font-size: 0.88rem;
+      border-radius: 12px;
+      background: var(--btn-sm-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 600;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .btn-sm:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: scale(1.05);
+    }
+
+    .btn-sm.saved {
+      background: rgba(0, 230, 118, 0.18);
+      border-color: rgba(0, 230, 118, 0.4);
+      color: var(--green);
+    }
+
+    /* Placeholder & Loading */
+    .placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: var(--muted);
+      text-align: center;
+      gap: 0.7rem;
+      font-size: 0.98rem;
+      font-weight: 500;
+      position: relative;
+      z-index: 1;
+    }
+
+    .placeholder span {
+      font-size: 3rem;
+      animation: floatEmoji 2.5s ease-in-out infinite;
+      display: block;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+    }
+
+    @keyframes floatEmoji {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    .loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      gap: 1.1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      border-top-color: var(--pink);
+      border-right-color: var(--purple);
+      border-radius: 50%;
+      animation: spin 0.75s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading p {
+      color: var(--muted);
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    /* ========== FAVORITOS ========== */
+    .favorites-section {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      backdrop-filter: blur(20px);
+      box-shadow: var(--shadow);
+      animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .favorites-section::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--orange), var(--pink), var(--purple));
+    }
+
+    .favorites-section h2 {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.3rem;
+      margin-bottom: 0.35rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+    }
+
+    .fav-hint {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+      font-weight: 500;
+    }
+
+    .favorites-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      min-height: 70px;
+    }
+
+    .fav-item {
+      background: var(--fav-item-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 1rem 1.15rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      cursor: grab;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-25px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .fav-item:hover {
+      background: var(--fav-item-hover);
+      border-color: rgba(180, 77, 255, 0.35);
+      transform: translateX(4px);
+    }
+
+    .fav-item:active {
+      cursor: grabbing;
+    }
+
+    .fav-item.dragging {
+      opacity: var(--orb-opacity);
+      transform: scale(0.97);
+    }
+
+    .fav-item.drag-over {
+      border-color: var(--cyan);
+      background: rgba(0, 229, 255, 0.1);
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.15);
+    }
+
+    .fav-icon {
+      font-size: 1.5rem;
+      flex-shrink: 0;
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+    }
+
+    .fav-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .fav-type {
+      font-size: 0.72rem;
+      color: var(--cyan);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      margin-bottom: 0.15rem;
+    }
+
+    .fav-text {
+      font-size: 0.95rem;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .fav-remove {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 1.15rem;
+      cursor: pointer;
+      padding: 0.4rem;
+      border-radius: 10px;
+      transition: all 0.2s;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+
+    .fav-remove:hover {
+      color: #ff5252;
+      background: rgba(255, 82, 82, 0.15);
+      transform: scale(1.1);
+    }
+
+    .empty-fav {
+      text-align: center;
+      color: var(--muted);
+      padding: 2rem 1rem;
+      font-size: 0.98rem;
+      font-weight: 500;
+      background: var(--empty-bg);
+      border-radius: 16px;
+      border: 1px dashed rgba(255, 255, 255, 0.1);
+    }
+
+    /* ========== TOAST ========== */
+    .toast {
+      position: fixed;
+      bottom: 1.8rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(120px);
+      background: linear-gradient(135deg, var(--purple), var(--pink));
+      color: white;
+      padding: 0.95rem 1.8rem;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      box-shadow: 0 12px 40px rgba(180, 77, 255, 0.45);
+      z-index: 100;
+      opacity: 0;
+      transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s;
+      pointer-events: none;
+      letter-spacing: 0.2px;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* ========== FOOTER ========== */
+    footer {
+      text-align: center;
+      margin-top: 2.8rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    footer a {
+      color: var(--cyan);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    footer a:hover {
+      color: var(--pink);
+    }
+
+    /* Animación de aparición de cards */
+    .card.appear {
+      animation: cardPop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes cardPop {
+      0% { opacity: 0; transform: scale(0.88) translateY(25px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 640px) {
+      .container {
+        padding: 1.4rem 1rem 2.5rem;
+      }
+
+      .controls {
+        padding: 1.35rem;
+      }
+
+      .btn {
+        width: 100%;
+        justify-content: center;
+        padding: 1rem 1.5rem;
+      }
+
+      .btn-row {
+        flex-direction: column;
+      }
+
+      .card {
+        min-height: 200px;
+        padding: 1.4rem;
+      }
+
+      .card-body {
+        font-size: 1.1rem;
+      }
+
+      .logo {
+        font-size: 2.1rem;
+      }
+    }
+
+    /* ========== THEME TOGGLE ========== */
+    .theme-toggle {
+      position: fixed;
+      top: 1.2rem;
+      right: 1.2rem;
+      z-index: 50;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 1px solid var(--card-border);
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.45rem;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s, border-color 0.3s;
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.1) rotate(12deg);
+    }
+
+    .theme-toggle:active {
+      transform: scale(0.95);
+    }
+
+    .theme-toggle .icon-sun,
+    .theme-toggle .icon-moon {
+      position: absolute;
+      transition: opacity 0.3s, transform 0.3s;
+    }
+
+    [data-theme="dark"] .icon-sun,
+    :root:not([data-theme="light"]) .icon-sun {
+      opacity: 0;
+      transform: rotate(-90deg) scale(0.5);
+    }
+
+    [data-theme="dark"] .icon-moon,
+    :root:not([data-theme="light"]) .icon-moon {
+      opacity: 1;
+      transform: rotate(0) scale(1);
+    }
+
+    [data-theme="light"] .icon-sun {
+      opacity: 1;
+      transform: rotate(0) scale(1);
+    }
+
+    [data-theme="light"] .icon-moon {
+      opacity: 0;
+      transform: rotate(90deg) scale(0.5);
+    }
+
+    @media (max-width: 640px) {
+      .theme-toggle {
+        top: 0.8rem;
+        right: 0.8rem;
+        width: 46px;
+        height: 46px;
+        font-size: 1.25rem;
+      }
+    }
+
+
+    /* ========== SNAKE GAME ========== */
+    .game-section {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      margin-bottom: 2rem;
+      backdrop-filter: blur(20px);
+      box-shadow: var(--shadow);
+      animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .game-section::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--green), var(--cyan), var(--purple));
+    }
+
+    .game-section h2 {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.3rem;
+      margin-bottom: 0.35rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+    }
+
+    .game-hint {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+      font-weight: 500;
+    }
+
+    .game-layout {
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      gap: 1.4rem;
+      align-items: start;
+    }
+
+    @media (max-width: 700px) {
+      .game-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .game-board-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.9rem;
+    }
+
+    #snake-canvas {
+      border-radius: 16px;
+      border: 2px solid var(--card-border);
+      background: #0a0612;
+      max-width: 100%;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+      image-rendering: pixelated;
+    }
+
+    [data-theme="light"] #snake-canvas {
+      background: #1a1230;
+    }
+
+    .game-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      justify-content: center;
+    }
+
+    .game-btn {
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--green), var(--cyan));
+      color: #0a0a1a;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .game-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 230, 118, 0.35);
+    }
+
+    .game-btn.secondary {
+      background: var(--btn-sm-bg);
+      color: var(--text);
+      border: 1px solid var(--card-border);
+    }
+
+    .game-btn.secondary:hover {
+      background: var(--fav-item-hover);
+      box-shadow: none;
+    }
+
+    .game-stats {
+      display: flex;
+      gap: 1rem;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+
+    .game-stats span {
+      background: var(--meta-bg);
+      padding: 0.35rem 0.8rem;
+      border-radius: 10px;
+      border: 1px solid var(--card-border);
+    }
+
+    .leaderboard {
+      background: var(--fav-item-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 1rem;
+    }
+
+    .leaderboard h3 {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.05rem;
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .leaderboard-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      max-height: 280px;
+      overflow-y: auto;
+    }
+
+    .leaderboard-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 0.6rem;
+      border-radius: 10px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .leaderboard-list li .rank {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 0.75rem;
+      font-weight: 800;
+      background: var(--meta-bg);
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+
+    .leaderboard-list li:nth-child(1) .rank {
+      background: linear-gradient(135deg, #ffd700, #ffb700);
+      color: #1a0b2e;
+    }
+
+    .leaderboard-list li:nth-child(2) .rank {
+      background: linear-gradient(135deg, #c0c0c0, #a0a0a0);
+      color: #1a0b2e;
+    }
+
+    .leaderboard-list li:nth-child(3) .rank {
+      background: linear-gradient(135deg, #cd7f32, #a05a20);
+      color: #fff;
+    }
+
+    .leaderboard-list li .name {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .leaderboard-list li .score {
+      color: var(--cyan);
+      font-weight: 800;
+    }
+
+    .leaderboard-empty {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+      padding: 1.2rem 0.5rem;
+    }
+
+    .mobile-dpad {
+      display: none;
+      grid-template-columns: repeat(3, 48px);
+      grid-template-rows: repeat(3, 48px);
+      gap: 4px;
+      margin-top: 0.5rem;
+    }
+
+    .mobile-dpad button {
+      border: 1px solid var(--card-border);
+      background: var(--btn-sm-bg);
+      color: var(--text);
+      border-radius: 12px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+    }
+
+    .mobile-dpad button:active {
+      background: var(--pink);
+      color: white;
+    }
+
+    .mobile-dpad .up { grid-column: 2; grid-row: 1; }
+    .mobile-dpad .left { grid-column: 1; grid-row: 2; }
+    .mobile-dpad .down { grid-column: 2; grid-row: 2; }
+    .mobile-dpad .right { grid-column: 3; grid-row: 2; }
+
+    @media (max-width: 700px) {
+      .mobile-dpad {
+        display: grid;
+      }
+    }
+
+    /* Name input modal for high score */
+    .score-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(6px);
+    }
+
+    .score-modal.show {
+      display: flex;
+    }
+
+    .score-modal-box {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 1.8rem;
+      max-width: 340px;
+      width: 90%;
+      text-align: center;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(20px);
+    }
+
+    .score-modal-box h3 {
+      font-family: 'Fredoka', sans-serif;
+      margin-bottom: 0.5rem;
+    }
+
+    .score-modal-box p {
+      color: var(--muted);
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .score-modal-box input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+      background: var(--select-bg);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      outline: none;
+    }
+
+    .score-modal-box input:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 3px rgba(180, 77, 255, 0.25);
+    }
+
+    .score-modal-actions {
+      display: flex;
+      gap: 0.6rem;
+      justify-content: center;
+    }
+
+
+    .credit-corner {
+      position: fixed;
+      bottom: 1rem;
+      right: 1.2rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-weight: 500;
+      z-index: 40;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 0.35rem 0.85rem;
+      border-radius: 50px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      pointer-events: none;
+    }
+
+    .credit-corner strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    @media (max-width: 640px) {
+      .credit-corner {
+        bottom: 0.7rem;
+        right: 0.7rem;
+        font-size: 0.72rem;
+        padding: 0.3rem 0.7rem;
+      }
+    }
+
+
+    /* Stats bar */
+    .stats-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+      animation: fadeUp 0.7s ease-out 0.05s both;
+    }
+
+    .stat-chip {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 50px;
+      padding: 0.4rem 0.95rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--muted);
+      backdrop-filter: blur(10px);
+    }
+
+    .stat-chip strong {
+      color: var(--text);
+    }
+
+    /* View mode buttons */
+    .view-mode {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .view-btn {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.45rem 1rem;
+      border-radius: 50px;
+      border: 1px solid var(--card-border);
+      background: var(--btn-sm-bg);
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .view-btn.active {
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      color: white;
+      border-color: transparent;
+      box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
+    }
+
+    .view-btn:hover:not(.active) {
+      background: var(--fav-item-hover);
+    }
+
+    /* Hide cards by mode */
+    .results.mode-activity .joke-card { display: none; }
+    .results.mode-joke .activity-card { display: none; }
+    .results.mode-activity,
+    .results.mode-joke {
+      grid-template-columns: 1fr;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Confetti */
+    .confetti-piece {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      pointer-events: none;
+      z-index: 999;
+      animation: confettiFall 1s ease-out forwards;
+    }
+
+    @keyframes confettiFall {
+      0% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+      100% { opacity: 0; transform: translateY(120px) rotate(720deg) scale(0.3); }
+    }
+
+    /* Welcome modal */
+    .welcome-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: 300;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(8px);
+      padding: 1rem;
+    }
+
+    .welcome-modal.show {
+      display: flex;
+    }
+
+    .welcome-box {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 2rem 1.75rem;
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(24px);
+      animation: cardPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .welcome-box h2 {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
+      background: linear-gradient(110deg, var(--pink), var(--purple), var(--cyan));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .welcome-box p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 0.6rem;
+      line-height: 1.5;
+    }
+
+    .welcome-box ul {
+      text-align: left;
+      margin: 1rem 0 1.4rem;
+      padding-left: 1.2rem;
+      color: var(--text);
+      font-size: 0.92rem;
+      line-height: 1.7;
+    }
+
+    .welcome-box ul li {
+      margin-bottom: 0.25rem;
+    }
+
+    .welcome-box .game-btn {
+      width: 100%;
+      justify-content: center;
+      padding: 0.85rem;
+    }
+
+    /* Snake speed select */
+    .speed-select {
+      display: flex;
+      gap: 0.4rem;
+      align-items: center;
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .speed-select select {
+      width: auto;
+      padding: 0.4rem 1.8rem 0.4rem 0.7rem;
+      font-size: 0.85rem;
+      border-radius: 10px;
+    }
+
+    .sound-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .sound-toggle input {
+      accent-color: var(--pink);
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Theme toggle -->
+  <button class="theme-toggle" id="theme-toggle" title="Cambiar modo claro/oscuro" aria-label="Cambiar tema">
+    <span class="icon-sun">☀️</span>
+    <span class="icon-moon">🌙</span>
+  </button>
+
+  <!-- Orbes de fondo animados -->
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <div class="container">
+    <header>
+      <div class="logo-wrap">
+        <span class="logo-emoji">🎭</span>
+        <h1 class="logo">¿Aburrido?</h1>
+      </div>
+      <p class="subtitle">Generador de Actividades + Chistes al instante</p>
+
+    </header>
+
+
+    <div class="stats-bar">
+      <div class="stat-chip">🎯 Actividades: <strong id="stat-activities">0</strong></div>
+      <div class="stat-chip">😂 Chistes: <strong id="stat-jokes">0</strong></div>
+    </div>
+
+    <div class="view-mode">
+      <button class="view-btn active" data-mode="both">Ambos</button>
+      <button class="view-btn" data-mode="activity">Solo actividades</button>
+      <button class="view-btn" data-mode="joke">Solo chistes</button>
+    </div>
+
+    <section class="controls">
+      <h2>⚙️ Personaliza tu dosis de diversión</h2>
+      <div class="filters">
+        <div class="filter-group">
+          <label for="activity-type">Tipo de actividad</label>
+          <select id="activity-type">
+            <option value="">Cualquiera</option>
+            <option value="education">Educación</option>
+            <option value="recreational">Recreativa</option>
+            <option value="social">Social</option>
+            <option value="diy">Hazlo tú mismo</option>
+            <option value="charity">Caridad</option>
+            <option value="cooking">Cocina</option>
+            <option value="relaxation">Relajación</option>
+            <option value="music">Música</option>
+            <option value="busywork">Ocupación</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="participants">Participantes</label>
+          <select id="participants">
+            <option value="">Cualquiera</option>
+            <option value="1">1 persona</option>
+            <option value="2">2 personas</option>
+            <option value="3">3 personas</option>
+            <option value="4">4+ personas</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="joke-category">Categoría de chiste</label>
+          <select id="joke-category">
+            <option value="Any">Cualquiera</option>
+            <option value="Programming">Programación</option>
+            <option value="Pun">Juegos de palabras</option>
+            <option value="Spooky">Espeluznante</option>
+            <option value="Christmas">Navidad</option>
+            <option value="Misc">Varios</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" id="btn-activity">
+          🎯 Nueva Actividad
+        </button>
+        <button class="btn btn-secondary" id="btn-joke">
+          😂 Nuevo Chiste
+        </button>
+        <button class="btn btn-both" id="btn-both">
+          ✨ ¡Los dos!
+        </button>
+      </div>
+      <p class="kbd-hint">Atajo: pulsa <span class="kbd">Espacio</span> o <span class="kbd">Enter</span> para generar ambos</p>
+    </section>
+
+    <section class="results">
+      <article class="card activity-card" id="activity-card">
+        <div class="placeholder">
+          <span>🎲</span>
+          <p>Pulsa el botón para descubrir<br>qué hacer cuando te aburres</p>
+        </div>
+      </article>
+
+      <article class="card joke-card" id="joke-card">
+        <div class="placeholder">
+          <span>🤭</span>
+          <p>Pulsa el botón para recibir<br>un chiste fresco</p>
+        </div>
+      </article>
+    </section>
+
+    
+    <section class="game-section" id="game-section">
+      <h2>🐍 Minijuego Snake</h2>
+      <p class="game-hint">Usa las flechas del teclado (o los botones en móvil) · Come la comida y no te choques</p>
+
+      <div class="game-layout">
+        <div class="game-board-wrap">
+          <div class="game-stats">
+            <span>Puntos: <strong id="snake-score">0</strong></span>
+            <span>Récord: <strong id="snake-high">0</strong></span>
+          </div>
+          <canvas id="snake-canvas" width="320" height="320"></canvas>
+          <div class="game-controls">
+            <button class="game-btn" id="snake-start">▶ Jugar</button>
+            <button class="game-btn secondary" id="snake-pause">⏸ Pausa</button>
+            <div class="speed-select">
+              <label for="snake-speed">Velocidad</label>
+              <select id="snake-speed">
+                <option value="160">Lento</option>
+                <option value="110" selected>Normal</option>
+                <option value="70">Rápido</option>
+              </select>
+            </div>
+            <label class="sound-toggle">
+              <input type="checkbox" id="snake-sound" checked />
+              🔊 Sonido
+            </label>
+          </div>
+          <div class="mobile-dpad" aria-label="Controles táctiles">
+            <button class="up" data-dir="up">▲</button>
+            <button class="left" data-dir="left">◀</button>
+            <button class="down" data-dir="down">▼</button>
+            <button class="right" data-dir="right">▶</button>
+          </div>
+        </div>
+
+        <div class="leaderboard">
+          <h3>🏆 Tabla de amigos</h3>
+          <ul class="leaderboard-list" id="leaderboard-list">
+            <li class="leaderboard-empty">Aún no hay puntuaciones. ¡Sé el primero!</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="favorites-section">
+      <h2>⭐ Mis Favoritos</h2>
+      <p class="fav-hint">Arrastra para reordenar · Se guardan automáticamente</p>
+      <div class="favorites-list" id="favorites-list">
+        <div class="empty-fav">Aún no tienes favoritos. ¡Guarda los que más te gusten!</div>
+      </div>
+    </section>
+
+    <footer>
+      <p>Actividades locales + <a href="https://jokeapi.dev" target="_blank" rel="noopener">JokeAPI</a> · Hecho con 💜 para clase</p>
+    </footer>
+    <div class="credit-corner">Creado por <strong>Andrés Díaz</strong></div>
+  </div>
+
+  
+  <div class="score-modal" id="score-modal">
+    <div class="score-modal-box">
+      <h3>🎉 ¡Nueva puntuación!</h3>
+      <p>Conseguiste <strong id="modal-score">0</strong> puntos. Escribe tu nombre:</p>
+      <input type="text" id="score-name" maxlength="16" placeholder="Tu nombre" value="Andrés" />
+      <div class="score-modal-actions">
+        <button class="game-btn" id="save-score-btn">Guardar</button>
+        <button class="game-btn secondary" id="skip-score-btn">Omitir</button>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="welcome-modal" id="welcome-modal">
+    <div class="welcome-box">
+      <h2>¡Bienvenido! 🎭</h2>
+      <p>Esta página te ayuda a combatir el aburrimiento.</p>
+      <ul>
+        <li>🎯 Genera <strong>actividades</strong> y <strong>chistes</strong></li>
+        <li>⭐ Guarda tus favoritos (se quedan guardados)</li>
+        <li>🐍 Juega al <strong>Snake</strong> y entra en la tabla de amigos</li>
+        <li>☀️ Cambia entre modo claro y oscuro</li>
+        <li>⌨️ Atajo: <strong>Espacio</strong> o <strong>Enter</strong> genera ambos</li>
+      </ul>
+      <button class="game-btn" id="welcome-close">¡Empezar!</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+
+    // ========== THEME ==========
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+
+    function applyTheme(theme) {
+      html.setAttribute('data-theme', theme);
+      localStorage.setItem('funTheme', theme);
+    }
+
+    // Load saved or system preference
+    const savedTheme = localStorage.getItem('funTheme');
+    if (savedTheme) {
+      applyTheme(savedTheme);
+    } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+      applyTheme('light');
+    } else {
+      applyTheme('dark');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      const current = html.getAttribute('data-theme') || 'dark';
+      applyTheme(current === 'dark' ? 'light' : 'dark');
+    });
+
+    // ========== STATS ==========
+    function getStats() {
+      return JSON.parse(localStorage.getItem('funStats') || '{"activities":0,"jokes":0}');
+    }
+    function bumpStat(key) {
+      const s = getStats();
+      s[key] = (s[key] || 0) + 1;
+      localStorage.setItem('funStats', JSON.stringify(s));
+      updateStatsUI();
+    }
+    function updateStatsUI() {
+      const s = getStats();
+      const a = document.getElementById('stat-activities');
+      const j = document.getElementById('stat-jokes');
+      if (a) a.textContent = s.activities || 0;
+      if (j) j.textContent = s.jokes || 0;
+    }
+    updateStatsUI();
+
+    // ========== VIEW MODE ==========
+    const resultsEl = document.querySelector('.results');
+    document.querySelectorAll('.view-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const mode = btn.dataset.mode;
+        resultsEl.classList.remove('mode-activity', 'mode-joke');
+        if (mode === 'activity') resultsEl.classList.add('mode-activity');
+        if (mode === 'joke') resultsEl.classList.add('mode-joke');
+        localStorage.setItem('funViewMode', mode);
+      });
+    });
+    const savedMode = localStorage.getItem('funViewMode') || 'both';
+    const modeBtn = document.querySelector(`.view-btn[data-mode="${savedMode}"]`);
+    if (modeBtn) modeBtn.click();
+
+    // ========== CONFETTI ==========
+    function confetti(x, y) {
+      const colors = ['#ff6b9d', '#b44dff', '#00e5ff', '#ff9f43', '#00e676', '#ffd700'];
+      for (let i = 0; i < 18; i++) {
+        const el = document.createElement('div');
+        el.className = 'confetti-piece';
+        el.style.left = (x + (Math.random() - 0.5) * 60) + 'px';
+        el.style.top = (y + (Math.random() - 0.5) * 20) + 'px';
+        el.style.background = colors[i % colors.length];
+        el.style.animationDelay = (Math.random() * 0.15) + 's';
+        el.style.animationDuration = (0.7 + Math.random() * 0.5) + 's';
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 1200);
+      }
+    }
+
+    // ========== WELCOME MODAL ==========
+    const welcomeModal = document.getElementById('welcome-modal');
+    if (!localStorage.getItem('funWelcomeSeen')) {
+      welcomeModal.classList.add('show');
+    }
+    document.getElementById('welcome-close').addEventListener('click', () => {
+      welcomeModal.classList.remove('show');
+      localStorage.setItem('funWelcomeSeen', '1');
+    });
+
+
+
+    // ========== DATOS LOCALES DE ACTIVIDADES (siempre funcionan) ==========
+    const LOCAL_ACTIVITIES = [
+      // Educación
+      { activity: "Aprende 10 palabras nuevas en otro idioma", type: "education", participants: 1, price: 0, duration: "30 min", key: "a1" },
+      { activity: "Escribe una carta a tu yo del futuro", type: "education", participants: 1, price: 0, duration: "40 min", key: "a8" },
+      { activity: "Mira un documental corto sobre un tema nuevo", type: "education", participants: 1, price: 0, duration: "45 min", key: "a16" },
+      { activity: "Lee un capítulo de un libro que tienes pendiente", type: "education", participants: 1, price: 0, duration: "30 min", key: "a23" },
+      { activity: "Investiga un lugar del mundo que te gustaría visitar", type: "education", participants: 1, price: 0, duration: "30 min", key: "a30" },
+      { activity: "Aprende un truco de magia sencillo", type: "education", participants: 1, price: 0, duration: "30 min", key: "a37" },
+      { activity: "Mira un tutorial y aprende una habilidad nueva", type: "education", participants: 1, price: 0, duration: "45 min", key: "a44" },
+      { activity: "Practica cálculos mentales durante 15 minutos", type: "education", participants: 1, price: 0, duration: "15 min", key: "a51" },
+      { activity: "Memoriza un poema o una canción corta", type: "education", participants: 1, price: 0, duration: "25 min", key: "a52" },
+      { activity: "Investiga un invento curioso y cómo funciona", type: "education", participants: 1, price: 0, duration: "20 min", key: "a53" },
+      { activity: "Aprende las capitales de 10 países", type: "education", participants: 1, price: 0, duration: "20 min", key: "a54" },
+      { activity: "Lee un artículo interesante y resume las ideas clave", type: "education", participants: 1, price: 0, duration: "25 min", key: "a55" },
+      { activity: "Practica escribir con la mano no dominante", type: "education", participants: 1, price: 0, duration: "15 min", key: "a56" },
+      { activity: "Aprende a decir 'hola' y 'gracias' en 5 idiomas", type: "education", participants: 1, price: 0, duration: "20 min", key: "a57" },
+      { activity: "Mira un video de ciencia y anota 3 datos sorprendentes", type: "education", participants: 1, price: 0, duration: "20 min", key: "a58" },
+
+      // Recreativa
+      { activity: "Sal a caminar 30 minutos sin auriculares", type: "recreational", participants: 1, price: 0, duration: "30 min", key: "a7" },
+      { activity: "Juega un juego de mesa o de cartas", type: "recreational", participants: 2, price: 0, duration: "1 hora", key: "a15" },
+      { activity: "Organiza una tarde de fotos con amigos", type: "recreational", participants: 3, price: 0, duration: "2 horas", key: "a22" },
+      { activity: "Juega a un videojuego cooperativo o competitivo", type: "recreational", participants: 2, price: 0, duration: "1 hora", key: "a29" },
+      { activity: "Sal a observar las nubes o las estrellas", type: "recreational", participants: 1, price: 0, duration: "30 min", key: "a36" },
+      { activity: "Organiza una mini olimpiada de juegos caseros", type: "recreational", participants: 4, price: 0, duration: "2 horas", key: "a43" },
+      { activity: "Haz una foto creativa y compártela", type: "recreational", participants: 1, price: 0, duration: "20 min", key: "a50" },
+      { activity: "Haz una carrera de obstáculos en casa", type: "recreational", participants: 2, price: 0, duration: "30 min", key: "a59" },
+      { activity: "Juega al escondite o a las escondidas", type: "recreational", participants: 3, price: 0, duration: "40 min", key: "a60" },
+      { activity: "Haz malabares con 2 o 3 objetos", type: "recreational", participants: 1, price: 0, duration: "20 min", key: "a61" },
+      { activity: "Monta en bicicleta o monopatín un rato", type: "recreational", participants: 1, price: 0, duration: "40 min", key: "a62" },
+      { activity: "Organiza un torneo de piedra-papel-tijera", type: "recreational", participants: 2, price: 0, duration: "15 min", key: "a63" },
+      { activity: "Haz una búsqueda del tesoro en casa", type: "recreational", participants: 3, price: 0, duration: "45 min", key: "a64" },
+      { activity: "Practica equilibrarte en un pie durante 1 minuto", type: "recreational", participants: 1, price: 0, duration: "10 min", key: "a65" },
+      { activity: "Inventa un deporte absurdo y pruébalo", type: "recreational", participants: 2, price: 0, duration: "30 min", key: "a66" },
+
+      // Social
+      { activity: "Organiza una videollamada con un amigo lejano", type: "social", participants: 2, price: 0, duration: "1 hora", key: "a2" },
+      { activity: "Organiza un picnic improvisado en el parque", type: "social", participants: 3, price: 0.2, duration: "2 horas", key: "a9" },
+      { activity: "Llama a un familiar solo para saber cómo está", type: "social", participants: 2, price: 0, duration: "20 min", key: "a17" },
+      { activity: "Organiza una noche de juegos virtuales con amigos", type: "social", participants: 4, price: 0, duration: "2 horas", key: "a31" },
+      { activity: "Planea una salida con amigos para el fin de semana", type: "social", participants: 3, price: 0, duration: "20 min", key: "a45" },
+      { activity: "Escribe un mensaje de ánimo a 3 personas", type: "social", participants: 1, price: 0, duration: "15 min", key: "a67" },
+      { activity: "Organiza una tarde de té o café con alguien", type: "social", participants: 2, price: 0.1, duration: "1 hora", key: "a68" },
+      { activity: "Haz una encuesta divertida entre tus amigos", type: "social", participants: 4, price: 0, duration: "30 min", key: "a69" },
+      { activity: "Comparte un recuerdo divertido con alguien", type: "social", participants: 2, price: 0, duration: "15 min", key: "a70" },
+      { activity: "Organiza una noche de películas en grupo", type: "social", participants: 3, price: 0, duration: "2 horas", key: "a71" },
+      { activity: "Envía un audio gracioso a un amigo", type: "social", participants: 1, price: 0, duration: "5 min", key: "a72" },
+      { activity: "Haz un reto en grupo (plancha, sentadillas, etc.)", type: "social", participants: 3, price: 0, duration: "20 min", key: "a73" },
+
+      // DIY / Hazlo tú mismo
+      { activity: "Aprende a hacer un origami sencillo", type: "diy", participants: 1, price: 0, duration: "30 min", key: "a5" },
+      { activity: "Construye algo con materiales reciclados", type: "diy", participants: 1, price: 0, duration: "1 hora", key: "a13" },
+      { activity: "Dibuja o pinta algo sin preocuparte por el resultado", type: "diy", participants: 1, price: 0, duration: "40 min", key: "a20" },
+      { activity: "Repara o personaliza algo que tengas en casa", type: "diy", participants: 1, price: 0, duration: "1 hora", key: "a27" },
+      { activity: "Crea una tarjeta de felicitación hecha a mano", type: "diy", participants: 1, price: 0, duration: "30 min", key: "a34" },
+      { activity: "Decora un rincón de tu habitación", type: "diy", participants: 1, price: 0.1, duration: "1 hora", key: "a41" },
+      { activity: "Arma un puzzle o rompecabezas", type: "diy", participants: 1, price: 0, duration: "1 hora", key: "a48" },
+      { activity: "Haz un collage con recortes de revistas", type: "diy", participants: 1, price: 0, duration: "40 min", key: "a74" },
+      { activity: "Personaliza una camiseta o una funda con dibujos", type: "diy", participants: 1, price: 0.1, duration: "45 min", key: "a75" },
+      { activity: "Construye una fortaleza de almohadas", type: "diy", participants: 2, price: 0, duration: "30 min", key: "a76" },
+      { activity: "Haz una maceta decorada con materiales caseros", type: "diy", participants: 1, price: 0, duration: "40 min", key: "a77" },
+      { activity: "Crea un móvil o adorno colgante", type: "diy", participants: 1, price: 0, duration: "35 min", key: "a78" },
+      { activity: "Diseña tu propio logo o escudo personal", type: "diy", participants: 1, price: 0, duration: "25 min", key: "a79" },
+      { activity: "Haz un marco de fotos con cartón y decoración", type: "diy", participants: 1, price: 0, duration: "40 min", key: "a80" },
+
+      // Caridad
+      { activity: "Revisa tu ropa y dona lo que ya no uses", type: "charity", participants: 1, price: 0, duration: "1 hora", key: "a10" },
+      { activity: "Escribe un mensaje de ánimo a alguien que lo necesite", type: "charity", participants: 1, price: 0, duration: "10 min", key: "a24" },
+      { activity: "Haz voluntariado online o ayuda a alguien cerca", type: "charity", participants: 1, price: 0, duration: "1 hora", key: "a38" },
+      { activity: "Recoge basura en tu calle o parque durante 15 minutos", type: "charity", participants: 1, price: 0, duration: "15 min", key: "a81" },
+      { activity: "Ofrece ayuda a un vecino o familiar con una tarea", type: "charity", participants: 2, price: 0, duration: "30 min", key: "a82" },
+      { activity: "Comparte comida o algo útil con alguien", type: "charity", participants: 1, price: 0.1, duration: "20 min", key: "a83" },
+      { activity: "Dedica tiempo a escuchar a alguien que lo necesite", type: "charity", participants: 2, price: 0, duration: "30 min", key: "a84" },
+      { activity: "Haz una lista de cosas que puedes donar este mes", type: "charity", participants: 1, price: 0, duration: "15 min", key: "a85" },
+
+      // Cocina
+      { activity: "Cocina una receta que nunca hayas intentado", type: "cooking", participants: 1, price: 0.3, duration: "1-2 horas", key: "a3" },
+      { activity: "Aprende a hacer un café o té especial", type: "cooking", participants: 1, price: 0.1, duration: "20 min", key: "a11" },
+      { activity: "Prepara un postre fácil y compártelo", type: "cooking", participants: 2, price: 0.2, duration: "1 hora", key: "a18" },
+      { activity: "Haz un experimento de cocina (pan, yogurt, etc.)", type: "cooking", participants: 1, price: 0.2, duration: "2 horas", key: "a25" },
+      { activity: "Prepara un desayuno especial para alguien", type: "cooking", participants: 2, price: 0.2, duration: "45 min", key: "a32" },
+      { activity: "Cocina juntos una pizza casera", type: "cooking", participants: 3, price: 0.3, duration: "1.5 horas", key: "a39" },
+      { activity: "Haz un smoothie o jugo creativo", type: "cooking", participants: 1, price: 0.1, duration: "15 min", key: "a46" },
+      { activity: "Inventa un sándwich con ingredientes raros", type: "cooking", participants: 1, price: 0.1, duration: "15 min", key: "a86" },
+      { activity: "Prepara palomitas y prueba 3 condimentos distintos", type: "cooking", participants: 2, price: 0.1, duration: "20 min", key: "a87" },
+      { activity: "Haz galletas o muffins simples", type: "cooking", participants: 1, price: 0.2, duration: "1 hora", key: "a88" },
+      { activity: "Prepara una ensalada creativa con lo que haya", type: "cooking", participants: 1, price: 0.1, duration: "20 min", key: "a89" },
+      { activity: "Aprende a pelar y cortar frutas de forma decorativa", type: "cooking", participants: 1, price: 0, duration: "20 min", key: "a90" },
+      { activity: "Haz una salsa casera (chimichurri, pesto, etc.)", type: "cooking", participants: 1, price: 0.15, duration: "25 min", key: "a91" },
+
+      // Relajación
+      { activity: "Haz una lista de 20 cosas por las que estás agradecido", type: "relaxation", participants: 1, price: 0, duration: "20 min", key: "a4" },
+      { activity: "Medita 10 minutos con una app o en silencio", type: "relaxation", participants: 1, price: 0, duration: "10 min", key: "a12" },
+      { activity: "Haz una sesión de estiramientos o yoga suave", type: "relaxation", participants: 1, price: 0, duration: "20 min", key: "a19" },
+      { activity: "Toma un baño relajante con música suave", type: "relaxation", participants: 1, price: 0.1, duration: "30 min", key: "a26" },
+      { activity: "Haz una lista de metas pequeñas para esta semana", type: "relaxation", participants: 1, price: 0, duration: "15 min", key: "a33" },
+      { activity: "Practica respiración profunda 5 minutos", type: "relaxation", participants: 1, price: 0, duration: "5 min", key: "a40" },
+      { activity: "Escribe 3 cosas buenas que te pasaron hoy", type: "relaxation", participants: 1, price: 0, duration: "10 min", key: "a47" },
+      { activity: "Escucha sonidos de la naturaleza 15 minutos", type: "relaxation", participants: 1, price: 0, duration: "15 min", key: "a92" },
+      { activity: "Haz un diario de sueños o pensamientos", type: "relaxation", participants: 1, price: 0, duration: "20 min", key: "a93" },
+      { activity: "Organiza tu espacio de estudio o trabajo", type: "relaxation", participants: 1, price: 0, duration: "30 min", key: "a94" },
+      { activity: "Toma una siesta corta de 20 minutos", type: "relaxation", participants: 1, price: 0, duration: "20 min", key: "a95" },
+      { activity: "Haz una lista de canciones que te calman", type: "relaxation", participants: 1, price: 0, duration: "15 min", key: "a96" },
+      { activity: "Mira por la ventana y describe lo que ves", type: "relaxation", participants: 1, price: 0, duration: "10 min", key: "a97" },
+      { activity: "Practica sonreír a propósito durante 1 minuto", type: "relaxation", participants: 1, price: 0, duration: "5 min", key: "a98" },
+
+      // Música
+      { activity: "Escucha un álbum completo sin interrupciones", type: "music", participants: 1, price: 0, duration: "1 hora", key: "a6" },
+      { activity: "Crea una playlist de canciones que te hagan feliz", type: "music", participants: 1, price: 0, duration: "30 min", key: "a14" },
+      { activity: "Aprende a tocar una canción simple en un instrumento", type: "music", participants: 1, price: 0, duration: "1 hora", key: "a21" },
+      { activity: "Organiza una sesión de karaoke en casa", type: "music", participants: 3, price: 0, duration: "1 hora", key: "a28" },
+      { activity: "Descubre un nuevo artista o género musical", type: "music", participants: 1, price: 0, duration: "40 min", key: "a35" },
+      { activity: "Canta en voz alta tu canción favorita", type: "music", participants: 1, price: 0, duration: "10 min", key: "a42" },
+      { activity: "Baila libremente durante 15 minutos", type: "music", participants: 1, price: 0, duration: "15 min", key: "a49" },
+      { activity: "Crea una playlist para estudiar o concentrarte", type: "music", participants: 1, price: 0, duration: "20 min", key: "a99" },
+      { activity: "Intenta tararear una melodía inventada", type: "music", participants: 1, price: 0, duration: "10 min", key: "a100" },
+      { activity: "Organiza un baile improvisado con amigos", type: "music", participants: 3, price: 0, duration: "30 min", key: "a101" },
+      { activity: "Escucha la misma canción 3 veces y nota detalles nuevos", type: "music", participants: 1, price: 0, duration: "15 min", key: "a102" },
+      { activity: "Aprende el estribillo de una canción en otro idioma", type: "music", participants: 1, price: 0, duration: "20 min", key: "a103" },
+      { activity: "Haz un ranking de tus 10 canciones favoritas", type: "music", participants: 1, price: 0, duration: "25 min", key: "a104" },
+
+      // Ocupación / Busywork
+      { activity: "Ordena un cajón o estantería que esté desordenado", type: "busywork", participants: 1, price: 0, duration: "20 min", key: "a105" },
+      { activity: "Limpia la pantalla de todos tus dispositivos", type: "busywork", participants: 1, price: 0, duration: "10 min", key: "a106" },
+      { activity: "Organiza tus fotos del móvil en carpetas", type: "busywork", participants: 1, price: 0, duration: "30 min", key: "a107" },
+      { activity: "Revisa y borra archivos innecesarios del ordenador", type: "busywork", participants: 1, price: 0, duration: "25 min", key: "a108" },
+      { activity: "Haz una lista de compras para la semana", type: "busywork", participants: 1, price: 0, duration: "10 min", key: "a109" },
+      { activity: "Actualiza tu lista de contactos o agenda", type: "busywork", participants: 1, price: 0, duration: "15 min", key: "a110" },
+      { activity: "Dobla y organiza la ropa limpia", type: "busywork", participants: 1, price: 0, duration: "20 min", key: "a111" },
+      { activity: "Revisa tus objetivos del mes y márcalos", type: "busywork", participants: 1, price: 0, duration: "15 min", key: "a112" },
+      { activity: "Limpia tu escritorio y deja solo lo esencial", type: "busywork", participants: 1, price: 0, duration: "15 min", key: "a113" },
+      { activity: "Organiza los cables y cargadores de casa", type: "busywork", participants: 1, price: 0, duration: "20 min", key: "a114" },
+      { activity: "Haz una lista de películas o series por ver", type: "busywork", participants: 1, price: 0, duration: "15 min", key: "a115" },
+      { activity: "Revisa y actualiza tus contraseñas importantes", type: "busywork", participants: 1, price: 0, duration: "20 min", key: "a116" },
+      { activity: "Prepara la mochila o ropa para mañana", type: "busywork", participants: 1, price: 0, duration: "10 min", key: "a117" },
+      { activity: "Etiqueta cajas o carpetas para encontrar todo fácil", type: "busywork", participants: 1, price: 0, duration: "25 min", key: "a118" }
+    ];
+
+    const JOKE_API = 'https://v2.jokeapi.dev/joke';
+
+    let currentActivity = null;
+    let currentJoke = null;
+    let favorites = JSON.parse(localStorage.getItem('funFavorites') || '[]');
+
+    const activityCard = document.getElementById('activity-card');
+    const jokeCard = document.getElementById('joke-card');
+    const favoritesList = document.getElementById('favorites-list');
+    const toastEl = document.getElementById('toast');
+    const btnActivity = document.getElementById('btn-activity');
+    const btnJoke = document.getElementById('btn-joke');
+    const btnBoth = document.getElementById('btn-both');
+    const typeSelect = document.getElementById('activity-type');
+    const participantsSelect = document.getElementById('participants');
+    const jokeCategorySelect = document.getElementById('joke-category');
+
+    function showToast(msg) {
+      toastEl.textContent = msg;
+      toastEl.classList.add('show');
+      setTimeout(() => toastEl.classList.remove('show'), 2600);
+    }
+
+    function setLoading(card) {
+      card.innerHTML = `
+        <div class="loading">
+          <div class="spinner"></div>
+          <p>Buscando magia...</p>
+        </div>
+      `;
+    }
+
+    function typeLabels(type) {
+      const map = {
+        education: 'Educación', recreational: 'Recreativa', social: 'Social',
+        diy: 'Hazlo tú mismo', charity: 'Caridad', cooking: 'Cocina',
+        relaxation: 'Relajación', music: 'Música', busywork: 'Ocupación'
+      };
+      return map[type] || type;
+    }
+
+    // ========== ACTIVIDAD (local + filtros) ==========
+    function fetchActivity() {
+      setLoading(activityCard);
+      btnActivity.disabled = true;
+      btnBoth.disabled = true;
+
+      // Pequeño delay para que se vea el loading
+      setTimeout(() => {
+        try {
+          const type = typeSelect.value;
+          const participants = participantsSelect.value;
+
+          let filtered = LOCAL_ACTIVITIES.slice();
+
+          if (type) {
+            filtered = filtered.filter(a => a.type === type);
+          }
+          if (participants) {
+            const p = parseInt(participants, 10);
+            if (p === 4) {
+              filtered = filtered.filter(a => a.participants >= 4);
+            } else {
+              filtered = filtered.filter(a => a.participants === p);
+            }
+          }
+
+          if (filtered.length === 0) {
+            activityCard.innerHTML = `
+              <div class="placeholder">
+                <span>😕</span>
+                <p>No encontré actividades con esos filtros.<br>Prueba otros valores.</p>
+              </div>
+            `;
+            currentActivity = null;
+          } else {
+            const data = filtered[Math.floor(Math.random() * filtered.length)];
+            currentActivity = data;
+            renderActivity(data);
+            bumpStat('activities');
+          }
+        } catch (err) {
+          console.error(err);
+          activityCard.innerHTML = `
+            <div class="placeholder">
+              <span>⚠️</span>
+              <p>Algo salió mal. Intenta de nuevo.</p>
+            </div>
+          `;
+          currentActivity = null;
+        } finally {
+          btnActivity.disabled = false;
+          btnBoth.disabled = false;
+        }
+      }, 400);
+    }
+
+    function renderActivity(data) {
+      const isSaved = favorites.some(f => f.id === `act-${data.key}`);
+      activityCard.classList.remove('appear');
+      void activityCard.offsetWidth;
+      activityCard.classList.add('appear');
+
+      activityCard.innerHTML = `
+        <div class="card-header">
+          <div class="card-title">🎯 Actividad</div>
+          <span class="badge">${typeLabels(data.type)}</span>
+        </div>
+        <div class="card-body">${data.activity}</div>
+        <div class="card-meta">
+          <span class="meta-item">👥 ${data.participants || 1} pers.</span>
+          <span class="meta-item">💰 ${data.price === 0 ? 'Gratis' : data.price < 0.3 ? 'Barato' : 'Medio'}</span>
+          ${data.duration ? `<span class="meta-item">⏱️ ${data.duration}</span>` : ''}
+        </div>
+        <div class="card-actions">
+          <button class="btn-sm ${isSaved ? 'saved' : ''}" onclick="toggleFavorite('activity')">
+            ${isSaved ? '✓ Guardado' : '⭐ Guardar'}
+          </button>
+          <button class="btn-sm" onclick="copyActivity()">📋 Copiar</button>
+        </div>
+      `;
+    }
+
+    // ========== CHISTE (API externa que sí funciona) ==========
+    async function fetchJoke() {
+      setLoading(jokeCard);
+      btnJoke.disabled = true;
+      btnBoth.disabled = true;
+
+      try {
+        const category = jokeCategorySelect.value || 'Any';
+        const url = `${JOKE_API}/${category}?lang=es&safe-mode`;
+
+        const res = await fetch(url);
+        if (!res.ok) throw new Error('Error de red');
+
+        const data = await res.json();
+        if (data.error) throw new Error(data.message || 'Error en la API');
+
+        currentJoke = data;
+        renderJoke(data);
+        bumpStat('jokes');
+      } catch (err) {
+        console.error(err);
+        // Fallback local de chistes por si falla la API
+        const fallbackJokes = [
+          { type: 'single', joke: '¿Qué le dice un jardinero a otro? ¡Hasta luego, lucas!', category: 'Pun', id: 'f1' },
+          { type: 'single', joke: '¿Por qué los pájaros no usan Facebook? Porque ya tienen Twitter.', category: 'Pun', id: 'f2' },
+          { type: 'twopart', setup: '¿Qué hace una abeja en el gimnasio?', delivery: '¡Zum-ba!', category: 'Pun', id: 'f3' },
+          { type: 'single', joke: '¿Cuál es el animal más antiguo? La cebra, porque está en blanco y negro.', category: 'Pun', id: 'f4' },
+          { type: 'single', joke: '¿Qué le dice un semáforo a otro? No me mires, que me estoy cambiando.', category: 'Pun', id: 'f5' },
+          { type: 'twopart', setup: '¿Por qué los programadores confunden Halloween con Navidad?', delivery: 'Porque OCT 31 = DEC 25.', category: 'Programming', id: 'f6' },
+          { type: 'single', joke: '¿Qué hace un pez? Nada.', category: 'Pun', id: 'f7' },
+          { type: 'single', joke: 'Doctor, me duele aquí. Pues no se toque.', category: 'Pun', id: 'f8' }
+        ];
+        const data = fallbackJokes[Math.floor(Math.random() * fallbackJokes.length)];
+        currentJoke = data;
+        renderJoke(data);
+        bumpStat('jokes');
+        showToast('Usando chiste de respaldo 😊');
+      } finally {
+        btnJoke.disabled = false;
+        btnBoth.disabled = false;
+      }
+    }
+
+    function renderJoke(data) {
+      const jokeText = data.type === 'twopart'
+        ? `${data.setup}<br><br><em>${data.delivery}</em>`
+        : data.joke;
+
+      const isSaved = favorites.some(f => f.id === `joke-${data.id}`);
+      jokeCard.classList.remove('appear');
+      void jokeCard.offsetWidth;
+      jokeCard.classList.add('appear');
+
+      jokeCard.innerHTML = `
+        <div class="card-header">
+          <div class="card-title">😂 Chiste</div>
+          <span class="badge">${data.category}</span>
+        </div>
+        <div class="card-body">${jokeText}</div>
+        <div class="card-actions">
+          <button class="btn-sm ${isSaved ? 'saved' : ''}" onclick="toggleFavorite('joke')">
+            ${isSaved ? '✓ Guardado' : '⭐ Guardar'}
+          </button>
+          <button class="btn-sm" onclick="copyJoke()">📋 Copiar</button>
+        </div>
+      `;
+    }
+
+    // ========== FAVORITOS ==========
+    function toggleFavorite(type) {
+      if (type === 'activity' && currentActivity) {
+        const id = `act-${currentActivity.key}`;
+        const idx = favorites.findIndex(f => f.id === id);
+        if (idx >= 0) {
+          favorites.splice(idx, 1);
+          showToast('Actividad eliminada de favoritos');
+        } else {
+          favorites.unshift({
+            id,
+            type: 'activity',
+            text: currentActivity.activity,
+            meta: typeLabels(currentActivity.type)
+          });
+          showToast('¡Actividad guardada! ⭐');
+          confetti(window.innerWidth / 2, window.innerHeight / 3);
+        }
+        renderActivity(currentActivity);
+      } else if (type === 'joke' && currentJoke) {
+        const id = `joke-${currentJoke.id}`;
+        const idx = favorites.findIndex(f => f.id === id);
+        if (idx >= 0) {
+          favorites.splice(idx, 1);
+          showToast('Chiste eliminado de favoritos');
+        } else {
+          const text = currentJoke.type === 'twopart'
+            ? `${currentJoke.setup} — ${currentJoke.delivery}`
+            : currentJoke.joke;
+          favorites.unshift({
+            id,
+            type: 'joke',
+            text,
+            meta: currentJoke.category
+          });
+          showToast('¡Chiste guardado! ⭐');
+          confetti(window.innerWidth / 2, window.innerHeight / 3);
+        }
+        renderJoke(currentJoke);
+      }
+      saveFavorites();
+      renderFavorites();
+    }
+
+    function removeFavorite(id) {
+      favorites = favorites.filter(f => f.id !== id);
+      saveFavorites();
+      renderFavorites();
+      if (currentActivity && `act-${currentActivity.key}` === id) renderActivity(currentActivity);
+      if (currentJoke && `joke-${currentJoke.id}` === id) renderJoke(currentJoke);
+      showToast('Eliminado de favoritos');
+    }
+
+    function saveFavorites() {
+      localStorage.setItem('funFavorites', JSON.stringify(favorites));
+    }
+
+    function renderFavorites() {
+      if (favorites.length === 0) {
+        favoritesList.innerHTML = `<div class="empty-fav">Aún no tienes favoritos. ¡Guarda los que más te gusten!</div>`;
+        return;
+      }
+
+      favoritesList.innerHTML = favorites.map((f, i) => `
+        <div class="fav-item" draggable="true" data-id="${f.id}" data-index="${i}">
+          <span class="fav-icon">${f.type === 'activity' ? '🎯' : '😂'}</span>
+          <div class="fav-content">
+            <div class="fav-type">${f.type === 'activity' ? 'Actividad' : 'Chiste'} · ${f.meta}</div>
+            <div class="fav-text">${f.text}</div>
+          </div>
+          <button class="fav-remove" onclick="removeFavorite('${f.id}')" title="Eliminar">✕</button>
+        </div>
+      `).join('');
+
+      const items = favoritesList.querySelectorAll('.fav-item');
+      items.forEach(item => {
+        item.addEventListener('dragstart', handleDragStart);
+        item.addEventListener('dragover', handleDragOver);
+        item.addEventListener('drop', handleDrop);
+        item.addEventListener('dragend', handleDragEnd);
+        item.addEventListener('dragenter', handleDragEnter);
+        item.addEventListener('dragleave', handleDragLeave);
+      });
+    }
+
+    let dragSrcIndex = null;
+
+    function handleDragStart(e) {
+      dragSrcIndex = +this.dataset.index;
+      this.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    }
+
+    function handleDragOver(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+    }
+
+    function handleDragEnter() {
+      this.classList.add('drag-over');
+    }
+
+    function handleDragLeave() {
+      this.classList.remove('drag-over');
+    }
+
+    function handleDrop(e) {
+      e.stopPropagation();
+      const targetIndex = +this.dataset.index;
+      if (dragSrcIndex !== null && dragSrcIndex !== targetIndex) {
+        const item = favorites.splice(dragSrcIndex, 1)[0];
+        favorites.splice(targetIndex, 0, item);
+        saveFavorites();
+        renderFavorites();
+      }
+      return false;
+    }
+
+    function handleDragEnd() {
+      this.classList.remove('dragging');
+      document.querySelectorAll('.fav-item').forEach(el => el.classList.remove('drag-over'));
+    }
+
+    // ========== EVENTOS ==========
+    btnActivity.addEventListener('click', fetchActivity);
+    btnJoke.addEventListener('click', fetchJoke);
+    btnBoth.addEventListener('click', () => {
+      fetchActivity();
+      fetchJoke();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'SELECT' || e.target.tagName === 'INPUT') return;
+      if (e.code === 'Space' || e.code === 'Enter') {
+        e.preventDefault();
+        fetchActivity();
+        fetchJoke();
+      }
+    });
+
+
+    // ========== SNAKE GAME ==========
+    const canvas = document.getElementById('snake-canvas');
+    const ctx = canvas.getContext('2d');
+    const GRID = 16;
+    const COLS = canvas.width / GRID;
+    const ROWS = canvas.height / GRID;
+
+    let snake = [];
+    let direction = { x: 1, y: 0 };
+    let nextDirection = { x: 1, y: 0 };
+    let food = { x: 0, y: 0 };
+    let score = 0;
+    let highScore = parseInt(localStorage.getItem('snakeHigh') || '0', 10);
+    let gameLoop = null;
+    let isRunning = false;
+    let isPaused = false;
+    let pendingScore = 0;
+    let baseSpeed = 110;
+    let currentSpeed = 110;
+    let soundOn = true;
+
+    // Simple sounds with Web Audio API
+    let audioCtx = null;
+    function playSound(type) {
+      if (!soundOn) return;
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        if (type === 'eat') {
+          osc.frequency.value = 520;
+          gain.gain.value = 0.08;
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.08);
+        } else if (type === 'die') {
+          osc.frequency.value = 120;
+          gain.gain.value = 0.12;
+          osc.frequency.linearRampToValueAtTime(60, audioCtx.currentTime + 0.3);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.3);
+        }
+      } catch (_) {}
+    }
+
+    const speedSelect = document.getElementById('snake-speed');
+    const soundCheck = document.getElementById('snake-sound');
+    if (speedSelect) {
+      baseSpeed = parseInt(speedSelect.value, 10);
+      speedSelect.addEventListener('change', () => {
+        baseSpeed = parseInt(speedSelect.value, 10);
+        if (isRunning && !isPaused) {
+          clearInterval(gameLoop);
+          currentSpeed = Math.max(45, baseSpeed - Math.floor(score / 30) * 8);
+          gameLoop = setInterval(tick, currentSpeed);
+        }
+      });
+    }
+    if (soundCheck) {
+      soundOn = soundCheck.checked;
+      soundCheck.addEventListener('change', () => { soundOn = soundCheck.checked; });
+    }
+
+    document.getElementById('snake-high').textContent = highScore;
+
+    function randomFood() {
+      let pos;
+      do {
+        pos = {
+          x: Math.floor(Math.random() * COLS),
+          y: Math.floor(Math.random() * ROWS)
+        };
+      } while (snake.some(s => s.x === pos.x && s.y === pos.y));
+      return pos;
+    }
+
+    function resetGame() {
+      snake = [
+        { x: 5, y: 8 },
+        { x: 4, y: 8 },
+        { x: 3, y: 8 }
+      ];
+      direction = { x: 1, y: 0 };
+      nextDirection = { x: 1, y: 0 };
+      food = randomFood();
+      score = 0;
+      document.getElementById('snake-score').textContent = score;
+      isPaused = false;
+    }
+
+    function drawCell(x, y, color, radius = 4) {
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.roundRect(x * GRID + 1, y * GRID + 1, GRID - 2, GRID - 2, radius);
+      ctx.fill();
+    }
+
+    function draw() {
+      // background
+      ctx.fillStyle = '#0a0612';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // subtle grid
+      ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= COLS; i++) {
+        ctx.beginPath();
+        ctx.moveTo(i * GRID, 0);
+        ctx.lineTo(i * GRID, canvas.height);
+        ctx.stroke();
+      }
+      for (let j = 0; j <= ROWS; j++) {
+        ctx.beginPath();
+        ctx.moveTo(0, j * GRID);
+        ctx.lineTo(canvas.width, j * GRID);
+        ctx.stroke();
+      }
+
+      // food
+      drawCell(food.x, food.y, '#ff6b9d', 6);
+
+      // snake
+      snake.forEach((seg, i) => {
+        const color = i === 0 ? '#00e5ff' : `hsl(${160 + i * 3}, 80%, ${55 - i}%)`;
+        drawCell(seg.x, seg.y, color, i === 0 ? 5 : 3);
+      });
+
+      if (isPaused) {
+        ctx.fillStyle = 'rgba(0,0,0,0.55)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 22px Fredoka, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('PAUSA', canvas.width / 2, canvas.height / 2);
+      }
+    }
+
+    function tick() {
+      if (isPaused) return;
+
+      direction = { ...nextDirection };
+      const head = {
+        x: snake[0].x + direction.x,
+        y: snake[0].y + direction.y
+      };
+
+      // wall collision
+      if (head.x < 0 || head.x >= COLS || head.y < 0 || head.y >= ROWS) {
+        gameOver();
+        return;
+      }
+
+      // self collision
+      if (snake.some(s => s.x === head.x && s.y === head.y)) {
+        gameOver();
+        return;
+      }
+
+      snake.unshift(head);
+
+      if (head.x === food.x && head.y === food.y) {
+        score += 10;
+        document.getElementById('snake-score').textContent = score;
+        food = randomFood();
+        playSound('eat');
+        // Progressive difficulty: speed up every 30 points
+        const newSpeed = Math.max(45, baseSpeed - Math.floor(score / 30) * 8);
+        if (newSpeed !== currentSpeed && isRunning) {
+          currentSpeed = newSpeed;
+          clearInterval(gameLoop);
+          gameLoop = setInterval(tick, currentSpeed);
+        }
+      } else {
+        snake.pop();
+      }
+
+      draw();
+    }
+
+    function gameOver() {
+      clearInterval(gameLoop);
+      gameLoop = null;
+      isRunning = false;
+      playSound('die');
+      document.getElementById('snake-start').textContent = '▶ Otra vez';
+
+      if (score > 0) {
+        pendingScore = score;
+        if (score > highScore) {
+          highScore = score;
+          localStorage.setItem('snakeHigh', highScore);
+          document.getElementById('snake-high').textContent = highScore;
+        }
+        document.getElementById('modal-score').textContent = score;
+        document.getElementById('score-name').value = localStorage.getItem('snakePlayerName') || 'Andrés';
+        document.getElementById('score-modal').classList.add('show');
+        document.getElementById('score-name').focus();
+      }
+      draw();
+    }
+
+    function startGame() {
+      if (isRunning && !isPaused) return;
+      if (isPaused) {
+        isPaused = false;
+        draw();
+        return;
+      }
+      resetGame();
+      isRunning = true;
+      currentSpeed = baseSpeed;
+      document.getElementById('snake-start').textContent = '▶ Jugando...';
+      if (gameLoop) clearInterval(gameLoop);
+      gameLoop = setInterval(tick, currentSpeed);
+      draw();
+    }
+
+    function togglePause() {
+      if (!isRunning) return;
+      isPaused = !isPaused;
+      document.getElementById('snake-pause').textContent = isPaused ? '▶ Continuar' : '⏸ Pausa';
+      draw();
+    }
+
+    // Controls
+    document.getElementById('snake-start').addEventListener('click', startGame);
+    document.getElementById('snake-pause').addEventListener('click', togglePause);
+
+    document.addEventListener('keydown', (e) => {
+      const keyMap = {
+        ArrowUp: { x: 0, y: -1 },
+        ArrowDown: { x: 0, y: 1 },
+        ArrowLeft: { x: -1, y: 0 },
+        ArrowRight: { x: 1, y: 0 },
+        w: { x: 0, y: -1 },
+        s: { x: 0, y: 1 },
+        a: { x: -1, y: 0 },
+        d: { x: 1, y: 0 }
+      };
+      const dir = keyMap[e.key];
+      if (!dir) return;
+      // prevent reverse
+      if (dir.x === -direction.x && dir.y === -direction.y) return;
+      nextDirection = dir;
+      e.preventDefault();
+    });
+
+    document.querySelectorAll('.mobile-dpad button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const dirs = {
+          up: { x: 0, y: -1 },
+          down: { x: 0, y: 1 },
+          left: { x: -1, y: 0 },
+          right: { x: 1, y: 0 }
+        };
+        const dir = dirs[btn.dataset.dir];
+        if (dir.x === -direction.x && dir.y === -direction.y) return;
+        nextDirection = dir;
+      });
+    });
+
+    // Leaderboard
+    function getLeaderboard() {
+      return JSON.parse(localStorage.getItem('snakeLeaderboard') || '[]');
+    }
+
+    function saveToLeaderboard(name, points) {
+      let board = getLeaderboard();
+      board.push({ name: name.trim() || 'Anónimo', score: points, date: Date.now() });
+      board.sort((a, b) => b.score - a.score);
+      board = board.slice(0, 10); // top 10
+      localStorage.setItem('snakeLeaderboard', JSON.stringify(board));
+      localStorage.setItem('snakePlayerName', name.trim());
+      renderLeaderboard();
+    }
+
+    function renderLeaderboard() {
+      const board = getLeaderboard();
+      const list = document.getElementById('leaderboard-list');
+      if (board.length === 0) {
+        list.innerHTML = '<li class="leaderboard-empty">Aún no hay puntuaciones. ¡Sé el primero!</li>';
+        return;
+      }
+      list.innerHTML = board.map((entry, i) => `
+        <li>
+          <span class="rank">${i + 1}</span>
+          <span class="name">${entry.name}</span>
+          <span class="score">${entry.score}</span>
+        </li>
+      `).join('');
+    }
+
+    document.getElementById('save-score-btn').addEventListener('click', () => {
+      const name = document.getElementById('score-name').value;
+      saveToLeaderboard(name, pendingScore);
+      document.getElementById('score-modal').classList.remove('show');
+      showToast('¡Puntuación guardada! 🏆');
+    });
+
+    document.getElementById('skip-score-btn').addEventListener('click', () => {
+      document.getElementById('score-modal').classList.remove('show');
+    });
+
+    document.getElementById('score-name').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') document.getElementById('save-score-btn').click();
+    });
+
+    // Initial draw
+    resetGame();
+    draw();
+    renderLeaderboard();
+
+
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(() => showToast('¡Copiado! 📋')).catch(() => {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        ta.remove();
+        showToast('¡Copiado! 📋');
+      });
+    }
+
+    function copyJoke() {
+      if (!currentJoke) return;
+      const text = currentJoke.type === 'twopart'
+        ? `${currentJoke.setup} — ${currentJoke.delivery}`
+        : currentJoke.joke;
+      copyText(text);
+    }
+
+    function copyActivity() {
+      if (!currentActivity) return;
+      copyText(currentActivity.activity);
+    }
+
+    window.copyText = copyText;
+    window.copyJoke = copyJoke;
+    window.copyActivity = copyActivity;
+
+    window.toggleFavorite = toggleFavorite;
+    window.removeFavorite = removeFavorite;
+
+    renderFavorites();
+  </script>
+</body>
+</html>
